@@ -1,85 +1,85 @@
 * {
-  margin: 0;
-  box-sizing: border-box;
-  border: 1px solid red;
-  padding: 5px;
+    margin: 0;
+    box-sizing: border-box;
+    border: 1px solid red;
+    padding: 5px;
 }
 
-.header {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: black;
+#header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
 }
 
-.header_title {
-  font-size: 30px;
-  color: white;
+#header_title {
+    font-size: 30px;
+    color: white;
 }
 
-.header_exchange {
-  position: absolute;
-  right: 20px;
-  display: flex;
+#header_exchange {
+    position: absolute;
+    right: 20px;
+    display: flex;
 }
 
-/* .button_usd {
+/* #button_usd {
 }
 
-.button_byn {
+#button_byn {
 } */
 
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  margin: 0 auto;
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
 }
 
-/* .screen {
+/* #screen {
 }
 
-.screen_wrapper {
+#screen_wrapper {
 }
 
-.screen_movie {
+#screen_movie {
 } */
 
-.seats {
-  display: flex;
-  flex-direction: column;
+#seats {
+    display: flex;
+    flex-direction: column;
 }
 
 .seats_row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .seats_place {
-  width: 10px;
-  height: 10px;
-  margin: 5px;
+    width: 10px;
+    height: 10px;
+    margin: 5px;
 }
 
 .seats_love {
-  width: 30px;
+    width: 30px;
 }
 
-.selected {
-  display: flex;
+#selected {
+    display: flex;
 }
 
-/* .selected_text {
+/* #selected_text {
 }
 
-.selected_price {
+#selected_price {
 } */
 
-.footer {
-  display: flex;
-  justify-content: center;
+#footer {
+    display: flex;
+    justify-content: center;
 }
