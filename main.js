@@ -8,13 +8,27 @@ const seats = document.querySelectorAll('.seats_place');
 buttonBYN.addEventListener('click', () => (defPrice = 1));
 buttonUSD.addEventListener('click', () => defPrice * 2.55);
 
-function chooseSeat() {
-    // waiting for update
-}
+const infoDiv = document.createElement('div');
 
 function infoSeat() {
-    // waiting for update
+    infoDiv.setAttribute('class', 'seats_info');
+    infoDiv.innerHTML = `Seat number ${event.target.id}`;
+    event.target.append(infoDiv);
+    // добавить статсус из атрибутов которые будут меняться и цену
 }
 
-seats.forEach((item) => item.addEventListener('click', chooseSeat));
-seats.forEach((item) => item.addEventListener('mouseover', infoSeat));
+function removeInfoSeat() {
+    infoDiv.remove();
+}
+
+function chooseSeat() {
+    removeInfoSeat(); // после оплаты аттрибут выбранный становится оплаченым
+    event.target.setAttribute('status', 'chosen'); //добавить кнопку отменить выбор
+    // добавить посл данных в селектед
+}
+
+seats.forEach((item) => {
+    item.addEventListener('mouseover', infoSeat);
+    item.addEventListener('mouseout', removeInfoSeat);
+    item.addEventListener('click', chooseSeat);
+});
