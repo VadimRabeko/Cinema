@@ -24,7 +24,16 @@ function removeInfoSeat() {
 function chooseSeat() {
     removeInfoSeat(); // после оплаты аттрибут выбранный становится оплаченым
     event.target.setAttribute('status', 'chosen'); //добавить кнопку отменить выбор
-    // добавить посл данных в селектед
+    const selectDiv = document.getElementById('select'); // добавить посыл данных в селектед
+    const selectedDiv = document.createElement('div');
+
+    if (!0 /* если выбранного нет, то создать! сусловие! */) {
+        selectedDiv.setAttribute('id', 'selected');
+        document.body.append(selectedDiv);
+        selectDiv.replaceWith(selectedDiv);
+    }
+
+    selectedDiv.innerHTML = 'kek';
 }
 
 seats.forEach((item) => {

@@ -85,15 +85,13 @@
     background-color: yellow;
 }
 
-#selected {
+#select {
     display: flex;
 }
 
-/* #selected_text {
+/* #selected {
 }
-
-#selected_price {
-} */
+*/
 
 #footer {
     display: flex;
