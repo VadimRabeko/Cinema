@@ -3,7 +3,10 @@
 const buttonUSD = document.getElementById('button_usd');
 const buttonBYN = document.getElementById('button_byn');
 let price = 1;
+let priceCounter = 0;
 let switcher = false;
+let chosenArray = [];
+
 const seats = document.querySelectorAll('.seats_place');
 // const seatsPrice = document.
 
@@ -13,7 +16,7 @@ buttonUSD.addEventListener('click', () => {
 });
 buttonBYN.addEventListener('click', () => {
     if (switcher === false) {
-        price = price * 2.55;
+        price *= 2.55;
         switcher = true;
     }
 });
@@ -36,15 +39,13 @@ function chooseSeat() {
     removeInfoSeat(); // после оплаты аттрибут выбранный становится оплаченым
     event.target.setAttribute('status', 'chosen'); //добавить кнопку отменить выбор
     const selectDiv = document.getElementById('select');
-    const selectedDiv = document.createElement('div');
 
-    if (selectedDiv) {
-        selectedDiv.setAttribute('id', 'selected');
-        document.body.append(selectedDiv);
-        selectDiv.replaceWith(selectedDiv);
-    }
+    priceCounter += event.target.getAttribute('price') * price;
+    chosenArray.push(event.target.id);
 
-    selectedDiv.innerHTML = `You chose seats XXXXXX. Price: ${price}`; // добавить массив выбраных мест
+    selectDiv.innerHTML = `You chose seats ${[
+        chosenArray,
+    ]}. Price: ${priceCounter}`; // добавить массив выбраных мест // добавить кнопку подтвердить заказ
 }
 
 seats.forEach((item) => {
@@ -52,3 +53,5 @@ seats.forEach((item) => {
     item.addEventListener('mouseout', removeInfoSeat);
     item.addEventListener('click', chooseSeat);
 });
+
+// сделать объект в котором будут храниться цены всех выбранных мест и значение в этом объекте будет выводиться за вю цену либо каунтер
