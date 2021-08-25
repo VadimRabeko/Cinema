@@ -1,20 +1,31 @@
 'use strict';
 
-const buttonBYN = document.getElementById('button_byn');
 const buttonUSD = document.getElementById('button_usd');
-let defPrice = 1;
+const buttonBYN = document.getElementById('button_byn');
+let price = 1;
+let switcher = false;
 const seats = document.querySelectorAll('.seats_place');
+// const seatsPrice = document.
 
-buttonBYN.addEventListener('click', () => (defPrice = 1));
-buttonUSD.addEventListener('click', () => defPrice * 2.55);
+buttonUSD.addEventListener('click', () => {
+    price = 1;
+    switcher = false;
+});
+buttonBYN.addEventListener('click', () => {
+    if (switcher === false) {
+        price = price * 2.55;
+        switcher = true;
+    }
+});
 
 const infoDiv = document.createElement('div');
 
 function infoSeat() {
     infoDiv.setAttribute('class', 'seats_info');
-    infoDiv.innerHTML = `Seat number ${event.target.id}`;
+    infoDiv.innerHTML = `Seat number: ${event.target.id} Price: ${
+        event.target.getAttribute('price') * price
+    } Status: ${event.target.getAttribute('status')}`;
     event.target.append(infoDiv);
-    // добавить статсус из атрибутов которые будут меняться и цену
 }
 
 function removeInfoSeat() {
@@ -24,16 +35,16 @@ function removeInfoSeat() {
 function chooseSeat() {
     removeInfoSeat(); // после оплаты аттрибут выбранный становится оплаченым
     event.target.setAttribute('status', 'chosen'); //добавить кнопку отменить выбор
-    const selectDiv = document.getElementById('select'); // добавить посыл данных в селектед
+    const selectDiv = document.getElementById('select');
     const selectedDiv = document.createElement('div');
 
-    if (!0 /* если выбранного нет, то создать! сусловие! */) {
+    if (selectedDiv) {
         selectedDiv.setAttribute('id', 'selected');
         document.body.append(selectedDiv);
         selectDiv.replaceWith(selectedDiv);
     }
 
-    selectedDiv.innerHTML = 'kek';
+    selectedDiv.innerHTML = `You chose seats XXXXXX. Price: ${price}`; // добавить массив выбраных мест
 }
 
 seats.forEach((item) => {
