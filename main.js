@@ -2,13 +2,15 @@
 
 const buttonUSD = document.getElementById('button_usd');
 const buttonBYN = document.getElementById('button_byn');
+const seats = document.querySelectorAll('.seats_place');
 let price = 1;
 let priceCounter = 0;
 let switcher = false;
 let chosenArray = [];
 
-const seats = document.querySelectorAll('.seats_place');
-// const seatsPrice = document.
+const infoDiv = document.createElement('div');
+const confirmButton = document.createElement('button');
+const cancelButton = document.createElement('button');
 
 buttonUSD.addEventListener('click', () => {
     price = 1;
@@ -17,11 +19,10 @@ buttonUSD.addEventListener('click', () => {
 buttonBYN.addEventListener('click', () => {
     if (switcher === false) {
         price *= 2.55;
+        priceCounter *= 2.55;
         switcher = true;
     }
 });
-
-const infoDiv = document.createElement('div');
 
 function infoSeat() {
     infoDiv.setAttribute('class', 'seats_info');
@@ -36,16 +37,28 @@ function removeInfoSeat() {
 }
 
 function chooseSeat() {
-    removeInfoSeat(); // после оплаты аттрибут выбранный становится оплаченым
-    event.target.setAttribute('status', 'chosen'); //добавить кнопку отменить выбор
-    const selectDiv = document.getElementById('select');
+    if (event.target.getAttribute('status') === 'free') {
+        removeInfoSeat();
+        event.target.setAttribute('status', 'chosen');
+        const selectDiv = document.getElementById('select');
+        priceCounter += event.target.getAttribute('price') * price;
+        chosenArray.push(event.target.id);
 
-    priceCounter += event.target.getAttribute('price') * price;
-    chosenArray.push(event.target.id);
+        selectDiv.innerHTML = `You chose seats ${[
+            chosenArray,
+        ]}. Price: ${priceCounter.toFixed(2)}`;
 
-    selectDiv.innerHTML = `You chose seats ${[
-        chosenArray,
-    ]}. Price: ${priceCounter}`; // добавить массив выбраных мест // добавить кнопку подтвердить заказ
+        if (
+            !document.getElementById('confirmButton') &&
+            !document.getElementById('cancelButton')
+        ) {
+            confirmButton.setAttribute('id', 'confirmButton');
+            cancelButton.setAttribute('id', 'cancelButton');
+            const wrapperDiv = document.getElementById('wrapper');
+            wrapperDiv.append(confirmButton);
+            wrapperDiv.append(cancelButton);
+        }
+    }
 }
 
 seats.forEach((item) => {
@@ -54,4 +67,18 @@ seats.forEach((item) => {
     item.addEventListener('click', chooseSeat);
 });
 
-// сделать объект в котором будут храниться цены всех выбранных мест и значение в этом объекте будет выводиться за вю цену либо каунтер
+confirmButton.addEventListener('click', () => {
+    document
+        .querySelectorAll('[status=chosen]')
+        .forEach((item) => item.setAttribute('status', 'paid'));
+});
+
+cancelButton.addEventListener('click', () => {
+    document
+        .querySelectorAll('[status=chosen]')
+        .forEach((item) => item.setAttribute('status', 'free'));
+});
+
+// после оплаты аттрибут выбранный становится оплаченым
+// добавить кнопку отменить выбор
+// смена курса в реальном времени
