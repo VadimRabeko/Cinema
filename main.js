@@ -5,19 +5,16 @@ const buttonBYN = document.getElementById('button_byn');
 const seats = document.querySelectorAll('.seats_place');
 const selectDiv = document.getElementById('select');
 
-let price = 1;
+const chosenArray = [];
+let price = 1; // можно стоздать один объект с данными, его можно будет сохранять в локал стораж
 let priceCounter = 0;
 let switcher = false;
-let chosenArray = [];
 let currency = 'USD';
-if (switcher) {
-}
 
 const infoDiv = document.createElement('div');
 const confirmButton = document.createElement('button');
 const cancelButton = document.createElement('button');
 const selectedDiv = document.createElement('div');
-selectedDiv.setAttribute('id', 'selected');
 
 buttonUSD.addEventListener('click', () => {
     if (switcher) {
@@ -73,15 +70,23 @@ function chooseSeat() {
             !document.getElementById('confirmButton') &&
             !document.getElementById('cancelButton')
         ) {
+            selectedDiv.setAttribute('id', 'selected');
             confirmButton.setAttribute('id', 'confirmButton');
             confirmButton.innerText = 'Confirm chosen seats';
             cancelButton.setAttribute('id', 'cancelButton');
             cancelButton.innerText = 'Cancel the choice';
             const wrapperDiv = document.getElementById('wrapper');
-            wrapperDiv.append(confirmButton);
-            wrapperDiv.append(cancelButton);
+            wrapperDiv.append(confirmButton, cancelButton);
         }
     }
+}
+
+function cleanData() {
+    priceCounter = 0;
+    chosenArray.splice(0);
+    selectedDiv.replaceWith(selectDiv);
+    confirmButton.remove();
+    cancelButton.remove();
 }
 
 seats.forEach((seat) => {
@@ -94,20 +99,14 @@ confirmButton.addEventListener('click', () => {
     document
         .querySelectorAll('[status=chosen]')
         .forEach((seat) => seat.setAttribute('status', 'paid'));
-    priceCounter = 0;
-    chosenArray = [];
-    selectedDiv.replaceWith(selectDiv);
-    confirmButton.remove();
-    cancelButton.remove();
+    cleanData();
 });
 
 cancelButton.addEventListener('click', () => {
     document
         .querySelectorAll('[status=chosen]')
         .forEach((seat) => seat.setAttribute('status', 'free'));
-    priceCounter = 0;
-    chosenArray = [];
-    selectedDiv.replaceWith(selectDiv);
-    confirmButton.remove();
-    cancelButton.remove();
+    cleanData();
 });
+
+window.onload;
