@@ -2,8 +2,13 @@
 
 const buttonUSD = document.getElementById('button_usd');
 const buttonBYN = document.getElementById('button_byn');
-const seats = document.querySelectorAll('.seats_place');
 const selectDiv = document.getElementById('select');
+const seats = document.querySelectorAll('.seats_place');
+
+const infoDiv = document.createElement('div');
+const confirmButton = document.createElement('button');
+const cancelButton = document.createElement('button');
+const selectedDiv = document.createElement('div');
 
 const chosenArray = [];
 let price = 1; // можно стоздать один объект с данными, его можно будет сохранять в локал стораж
@@ -11,34 +16,25 @@ let priceCounter = 0;
 let switcher = false;
 let currency = 'USD';
 
-const infoDiv = document.createElement('div');
-const confirmButton = document.createElement('button');
-const cancelButton = document.createElement('button');
-const selectedDiv = document.createElement('div');
-
-buttonUSD.addEventListener('click', () => {
-    if (switcher) {
-        price = 1;
-        switcher = false;
-        priceCounter /= 2.55;
-        currency = 'USD';
-        selectedData(chosenArray, priceCounter);
+function changeCurrency() {
+    if (event.target === buttonUSD) {
+        if (switcher) {
+            price = 1;
+            switcher = false;
+            priceCounter /= 2.55;
+            currency = 'USD';
+            selectedData(chosenArray, priceCounter);
+        }
     }
-});
-buttonBYN.addEventListener('click', () => {
-    if (!switcher) {
-        price *= 2.55;
-        switcher = true;
-        priceCounter *= 2.55;
-        currency = 'BYN';
-        selectedData(chosenArray, priceCounter);
+    if (event.target === buttonBYN) {
+        if (!switcher) {
+            price *= 2.55;
+            switcher = true;
+            priceCounter *= 2.55;
+            currency = 'BYN';
+            selectedData(chosenArray, priceCounter);
+        }
     }
-});
-
-function selectedData(choice, totalPrice) {
-    selectedDiv.innerHTML = `You chose seats ${choice}. Price: ${totalPrice.toFixed(
-        2
-    )} ${currency}`;
 }
 
 function infoSeat() {
@@ -81,6 +77,12 @@ function chooseSeat() {
     }
 }
 
+function selectedData(choice, totalPrice) {
+    selectedDiv.innerHTML = `You chose seats ${choice}. Price: ${totalPrice.toFixed(
+        2
+    )} ${currency}`;
+}
+
 function cleanData() {
     priceCounter = 0;
     chosenArray.splice(0);
@@ -88,6 +90,9 @@ function cleanData() {
     confirmButton.remove();
     cancelButton.remove();
 }
+
+buttonUSD.addEventListener('click', changeCurrency);
+buttonBYN.addEventListener('click', changeCurrency);
 
 seats.forEach((seat) => {
     seat.addEventListener('mouseover', infoSeat);
@@ -108,5 +113,3 @@ cancelButton.addEventListener('click', () => {
         .forEach((seat) => seat.setAttribute('status', 'free'));
     cleanData();
 });
-
-window.onload;
