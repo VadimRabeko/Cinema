@@ -1,34 +1,44 @@
 * {
-    margin: 0;
     box-sizing: border-box;
-    border: 1px solid red;
+    margin: 0;
     padding: 5px;
+    font-family: 'Titillium Web';
+    border: 1px solid red;
 }
 
 #header {
-    position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     background-color: black;
 }
 
 #header_title {
+    width: 90%;
     font-size: 30px;
     color: white;
 }
 
 #header_exchange {
-    position: absolute;
-    right: 20px;
     display: flex;
+    width: 10%;
 }
 
-/* #button_usd {
-}
-
+#button_usd,
 #button_byn {
-} */
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 50%;
+    color: blueviolet;
+    background-color: brown;
+}
+
+#button_usd:hover,
+#button_byn:hover {
+    cursor: pointer;
+    background-color: burlywood;
+}
 
 #wrapper {
     display: flex;
@@ -53,7 +63,12 @@
 
 #buttonMovieNext {
     
-} */
+} 
+
+#buttonMoviePrevious:hover,
+#buttonMovieNext:hover{}
+
+*/
 
 img {
     width: 420px;
