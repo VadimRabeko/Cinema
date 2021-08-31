@@ -3,8 +3,21 @@
 const CURRENCY_USD = 'USD';
 const CURRENCY_BYN = 'BYN';
 const CONVERSATION_RATE = 2.55;
+const FIRST_TRAILER = `<iframe width="560" height="315" src="https://www.youtube.com/embed/rt-2cxAiPJk" title="YouTube video player"
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+const SECOND_TRAILER = `<iframe width="560" height="315" src="https://www.youtube.com/embed/X2m-08cOAbc" title="YouTube video player" 
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+const THIRD_TRAILER = `<iframe width="560" height="315" src="https://www.youtube.com/embed/nO_DIwuGBnA" title="YouTube video player" 
+frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+const FIRST_KEY = 'Chosen_Spider Man: No Way Home';
+const SECOND_KEY = 'Chosen_Free Guy';
+const THIRD_KEY = 'Chosen_KungFury';
+
 const VARIABLES = {
+    trailer: FIRST_TRAILER,
     chosenArray: [],
+    occupiedArray: [],
+    key: FIRST_KEY,
     price: 1,
     priceCounter: 0,
     switcher: false,
@@ -19,18 +32,50 @@ const screen = document.getElementById('screen');
 const movieButtonPrevious = document.getElementById('movieButtonPrevious');
 const movieButtonNext = document.getElementById('movieButtonNext');
 const moviesWrapper = document.getElementById('screen_images');
+const watchTrailerWrapper = document.getElementById('trailer');
+const watchTrailer = document.getElementById('watch_trailer');
 const movies = document.querySelectorAll('img');
 const seats = document.querySelectorAll('.seats_place');
 
+const closeVideoButton = document.createElement('button');
 const infoDiv = document.createElement('div');
 const confirmButton = document.createElement('button');
 const cancelButton = document.createElement('button');
 const selectedDiv = document.createElement('div');
 
-movieButtonPrevious.addEventListener('click', showPreviousMovie);
-movieButtonNext.addEventListener('click', showNextMovie);
+function showTrailer() {
+    watchTrailerWrapper.innerHTML = VARIABLES.trailer;
+
+    closeVideoButton.setAttribute('id', 'closeVideoButton');
+    closeVideoButton.innerText = 'Close Video';
+    watchTrailerWrapper.append(closeVideoButton);
+}
+
+function closeVideo() {
+    closeVideoButton.remove();
+    const activeTrailer = document.querySelector('iframe');
+    if (activeTrailer) {
+        activeTrailer.replaceWith(watchTrailer);
+    }
+}
+
+function cleanData() {
+    VARIABLES.priceCounter = 0;
+    VARIABLES.chosenArray.splice(0);
+    selectedDiv.replaceWith(selectDiv);
+    confirmButton.remove();
+    cancelButton.remove();
+}
+
+function makeSeatsFree() {
+    seats.forEach((seat) => seat.setAttribute('status', 'free'));
+}
 
 function showPreviousMovie() {
+    closeVideo();
+    cleanData();
+    makeSeatsFree();
+
     const activeMovie = moviesWrapper.querySelector('.active');
 
     if (activeMovie.previousElementSibling) {
@@ -40,9 +85,26 @@ function showPreviousMovie() {
         activeMovie.classList.remove('active');
         movies[movies.length - 1].classList.add('active');
     }
+
+    if (VARIABLES.trailer === FIRST_TRAILER) {
+        VARIABLES.trailer = THIRD_TRAILER;
+        VARIABLES.key = THIRD_KEY;
+    } else if (VARIABLES.trailer === THIRD_TRAILER) {
+        VARIABLES.trailer = SECOND_TRAILER;
+        VARIABLES.key = SECOND_KEY;
+    } else {
+        VARIABLES.trailer = FIRST_TRAILER;
+        VARIABLES.key = FIRST_KEY;
+    }
+
+    returnChosen(VARIABLES.key);
 }
 
 function showNextMovie() {
+    closeVideo();
+    cleanData();
+    makeSeatsFree();
+
     const activeMovie = moviesWrapper.querySelector('.active');
 
     if (activeMovie.nextElementSibling) {
@@ -52,6 +114,19 @@ function showNextMovie() {
         activeMovie.classList.remove('active');
         movies[0].classList.add('active');
     }
+
+    if (VARIABLES.trailer === FIRST_TRAILER) {
+        VARIABLES.trailer = SECOND_TRAILER;
+        VARIABLES.key = SECOND_KEY;
+    } else if (VARIABLES.trailer === SECOND_TRAILER) {
+        VARIABLES.trailer = THIRD_TRAILER;
+        VARIABLES.key = THIRD_KEY;
+    } else {
+        VARIABLES.trailer = FIRST_TRAILER;
+        VARIABLES.key = FIRST_KEY;
+    }
+
+    returnChosen(VARIABLES.key);
 }
 
 function showSliderButtons() {
@@ -125,16 +200,27 @@ function selectedData(choice, totalPrice) {
     selectedDiv.innerHTML = `You chose seats ${choice}. Price: ${totalPrice.toFixed(2)} ${VARIABLES.currency}`;
 }
 
-function cleanData() {
-    VARIABLES.priceCounter = 0;
-    VARIABLES.chosenArray.splice(0);
-    selectedDiv.replaceWith(selectDiv);
-    confirmButton.remove();
-    cancelButton.remove();
+function returnChosen(key) {
+    const oldData = JSON.parse(sessionStorage.getItem(key));
+    if (oldData) {
+        oldData.forEach((seatID) => {
+            seats.forEach((freeSeat) => {
+                if (freeSeat.id === seatID) {
+                    freeSeat.setAttribute('status', 'occupied');
+                }
+            });
+        });
+    }
 }
 
 screen.addEventListener('mouseover', showSliderButtons);
 screen.addEventListener('mouseout', removeSliderButtons);
+
+movieButtonPrevious.addEventListener('click', showPreviousMovie);
+movieButtonNext.addEventListener('click', showNextMovie);
+
+watchTrailer.addEventListener('click', showTrailer);
+closeVideoButton.addEventListener('click', closeVideo);
 
 buttonUSD.addEventListener('click', changeCurrency);
 buttonBYN.addEventListener('click', changeCurrency);
@@ -146,7 +232,17 @@ seats.forEach((seat) => {
 });
 
 confirmButton.addEventListener('click', () => {
-    document.querySelectorAll('[status=chosen]').forEach((seat) => seat.setAttribute('status', 'paid'));
+    document.querySelectorAll('[status=chosen]').forEach((seat) => {
+        seat.setAttribute('status', 'occupied');
+        VARIABLES.occupiedArray.push(seat.id);
+    });
+    const activeMovie = moviesWrapper.querySelector('.active');
+    const chosenSeats = JSON.parse(sessionStorage.getItem(`Chosen_${activeMovie['alt']}`));
+    if (chosenSeats) {
+        chosenSeats.forEach((seat) => VARIABLES.occupiedArray.push(seat));
+    }
+    sessionStorage.setItem(`Chosen_${activeMovie['alt']}`, JSON.stringify(VARIABLES.occupiedArray));
+    VARIABLES.occupiedArray.splice(0);
     cleanData();
 });
 
@@ -154,3 +250,5 @@ cancelButton.addEventListener('click', () => {
     document.querySelectorAll('[status=chosen]').forEach((seat) => seat.setAttribute('status', 'free'));
     cleanData();
 });
+
+// при переключении чистить дату, и принимать айди и элементам с этими айди добавлять оккупайд
