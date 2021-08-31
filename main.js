@@ -1,8 +1,24 @@
 'use strict';
 
+const CURRENCY_USD = 'USD';
+const CURRENCY_BYN = 'BYN';
+const CONVERSATION_RATE = 2.55;
+const VARIABLES = {
+    chosenArray: [],
+    price: 1,
+    priceCounter: 0,
+    switcher: false,
+    currency: CURRENCY_USD,
+};
+
 const buttonUSD = document.getElementById('button_usd');
 const buttonBYN = document.getElementById('button_byn');
+const wrapperDiv = document.getElementById('wrapper');
 const selectDiv = document.getElementById('select');
+const screen = document.getElementById('screen');
+const movieButtonPrevious = document.getElementById('movieButtonPrevious');
+const movieButtonNext = document.getElementById('movieButtonNext');
+const movies = document.querySelectorAll('img');
 const seats = document.querySelectorAll('.seats_place');
 
 const infoDiv = document.createElement('div');
@@ -10,29 +26,48 @@ const confirmButton = document.createElement('button');
 const cancelButton = document.createElement('button');
 const selectedDiv = document.createElement('div');
 
-const chosenArray = [];
-let price = 1; // можно стоздать один объект с данными, его можно будет сохранять в локал стораж
-let priceCounter = 0;
-let switcher = false;
-let currency = 'USD';
+movieButtonPrevious.addEventListener('click', showPreviousMovie);
+movieButtonNext.addEventListener('click', showNextMovie);
+
+function showPreviousMovie() {
+    console.log(movies);
+    const activeMovie = movies.querySelector('.active');
+    console.log(activeMovie);
+
+    // const newActiveMovie = activeMovie.previousElementSibling;
+    // newActiveMovie.classList.add('active');
+    // console.log(newActiveMovie);
+}
+
+function showNextMovie() {}
+
+function showSliderButtons() {
+    movieButtonPrevious.classList.add('active');
+    movieButtonNext.classList.add('active');
+}
+
+function removeSliderButtons() {
+    movieButtonPrevious.classList.remove('active');
+    movieButtonNext.classList.remove('active');
+}
 
 function changeCurrency() {
     if (event.target === buttonUSD) {
-        if (switcher) {
-            price = 1;
-            switcher = false;
-            priceCounter /= 2.55;
-            currency = 'USD';
-            selectedData(chosenArray, priceCounter);
+        if (VARIABLES.switcher) {
+            VARIABLES.price = 1;
+            VARIABLES.switcher = false;
+            VARIABLES.priceCounter /= CONVERSATION_RATE;
+            VARIABLES.currency = CURRENCY_USD;
+            selectedData(VARIABLES.chosenArray, VARIABLES.priceCounter);
         }
     }
     if (event.target === buttonBYN) {
-        if (!switcher) {
-            price *= 2.55;
-            switcher = true;
-            priceCounter *= 2.55;
-            currency = 'BYN';
-            selectedData(chosenArray, priceCounter);
+        if (!VARIABLES.switcher) {
+            VARIABLES.price *= CONVERSATION_RATE;
+            VARIABLES.switcher = true;
+            VARIABLES.priceCounter *= CONVERSATION_RATE;
+            VARIABLES.currency = CURRENCY_BYN;
+            selectedData(VARIABLES.chosenArray, VARIABLES.priceCounter);
         }
     }
 }
@@ -40,7 +75,7 @@ function changeCurrency() {
 function infoSeat() {
     infoDiv.setAttribute('class', 'seats_info');
     infoDiv.innerHTML = `Seat number: ${event.target.id} Price: ${
-        event.target.getAttribute('price') * price
+        event.target.getAttribute('price') * VARIABLES.price
     } Status: ${event.target.getAttribute('status')}`;
     event.target.append(infoDiv);
 }
@@ -53,43 +88,40 @@ function chooseSeat() {
     if (event.target.getAttribute('status') === 'free') {
         removeInfoSeat();
         event.target.setAttribute('status', 'chosen');
-        priceCounter += event.target.getAttribute('price') * price;
-        chosenArray.push(event.target.id);
+        VARIABLES.priceCounter += event.target.getAttribute('price') * VARIABLES.price;
+        VARIABLES.chosenArray.push(event.target.id);
 
-        selectedData(chosenArray, priceCounter);
+        selectedData(VARIABLES.chosenArray, VARIABLES.priceCounter);
 
         if (!document.getElementById('selected')) {
             selectDiv.replaceWith(selectedDiv);
         }
 
-        if (
-            !document.getElementById('confirmButton') &&
-            !document.getElementById('cancelButton')
-        ) {
+        if (!document.getElementById('confirmButton') && !document.getElementById('cancelButton')) {
             selectedDiv.setAttribute('id', 'selected');
             confirmButton.setAttribute('id', 'confirmButton');
-            confirmButton.innerText = 'Confirm chosen seats';
             cancelButton.setAttribute('id', 'cancelButton');
+            confirmButton.innerText = 'Confirm chosen seats';
             cancelButton.innerText = 'Cancel the choice';
-            const wrapperDiv = document.getElementById('wrapper');
             wrapperDiv.append(confirmButton, cancelButton);
         }
     }
 }
 
 function selectedData(choice, totalPrice) {
-    selectedDiv.innerHTML = `You chose seats ${choice}. Price: ${totalPrice.toFixed(
-        2
-    )} ${currency}`;
+    selectedDiv.innerHTML = `You chose seats ${choice}. Price: ${totalPrice.toFixed(2)} ${VARIABLES.currency}`;
 }
 
 function cleanData() {
-    priceCounter = 0;
-    chosenArray.splice(0);
+    VARIABLES.priceCounter = 0;
+    VARIABLES.chosenArray.splice(0);
     selectedDiv.replaceWith(selectDiv);
     confirmButton.remove();
     cancelButton.remove();
 }
+
+screen.addEventListener('mouseover', showSliderButtons);
+screen.addEventListener('mouseout', removeSliderButtons);
 
 buttonUSD.addEventListener('click', changeCurrency);
 buttonBYN.addEventListener('click', changeCurrency);
@@ -101,15 +133,11 @@ seats.forEach((seat) => {
 });
 
 confirmButton.addEventListener('click', () => {
-    document
-        .querySelectorAll('[status=chosen]')
-        .forEach((seat) => seat.setAttribute('status', 'paid'));
+    document.querySelectorAll('[status=chosen]').forEach((seat) => seat.setAttribute('status', 'paid'));
     cleanData();
 });
 
 cancelButton.addEventListener('click', () => {
-    document
-        .querySelectorAll('[status=chosen]')
-        .forEach((seat) => seat.setAttribute('status', 'free'));
+    document.querySelectorAll('[status=chosen]').forEach((seat) => seat.setAttribute('status', 'free'));
     cleanData();
 });

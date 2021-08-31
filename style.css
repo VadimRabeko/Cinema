@@ -39,14 +39,34 @@
     margin: 0 auto;
 }
 
-/* #screen {
+#screen {
+    display: flex;
 }
 
-#screen_wrapper {
+.slider_button {
+    display: none;
 }
 
-#screen_movie {
+/* #buttonMoviePrevious {
+    
+}
+
+#buttonMovieNext {
+    
 } */
+
+img {
+    width: 420px;
+    height: 240px;
+}
+
+.movie {
+    display: none;
+}
+
+.active {
+    display: block;
+}
 
 #seats {
     display: flex;
