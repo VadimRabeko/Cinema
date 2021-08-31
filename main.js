@@ -18,6 +18,7 @@ const selectDiv = document.getElementById('select');
 const screen = document.getElementById('screen');
 const movieButtonPrevious = document.getElementById('movieButtonPrevious');
 const movieButtonNext = document.getElementById('movieButtonNext');
+const moviesWrapper = document.getElementById('screen_images');
 const movies = document.querySelectorAll('img');
 const seats = document.querySelectorAll('.seats_place');
 
@@ -30,16 +31,28 @@ movieButtonPrevious.addEventListener('click', showPreviousMovie);
 movieButtonNext.addEventListener('click', showNextMovie);
 
 function showPreviousMovie() {
-    console.log(movies);
-    const activeMovie = movies.querySelector('.active');
-    console.log(activeMovie);
+    const activeMovie = moviesWrapper.querySelector('.active');
 
-    // const newActiveMovie = activeMovie.previousElementSibling;
-    // newActiveMovie.classList.add('active');
-    // console.log(newActiveMovie);
+    if (activeMovie.previousElementSibling) {
+        activeMovie.classList.remove('active');
+        activeMovie.previousElementSibling.classList.add('active');
+    } else {
+        activeMovie.classList.remove('active');
+        movies[movies.length - 1].classList.add('active');
+    }
 }
 
-function showNextMovie() {}
+function showNextMovie() {
+    const activeMovie = moviesWrapper.querySelector('.active');
+
+    if (activeMovie.nextElementSibling) {
+        activeMovie.classList.remove('active');
+        activeMovie.nextElementSibling.classList.add('active');
+    } else {
+        activeMovie.classList.remove('active');
+        movies[0].classList.add('active');
+    }
+}
 
 function showSliderButtons() {
     movieButtonPrevious.classList.add('active');
