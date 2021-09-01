@@ -1,43 +1,58 @@
 * {
     box-sizing: border-box;
     margin: 0;
-    padding: 5px;
+    padding: 0;
     font-family: 'Titillium Web';
-    border: 1px solid red;
+    /* border: 1px solid red; */
+}
+
+body {
+    background-color: rgb(70, 70, 70);
 }
 
 #header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
     background-color: black;
+    border-bottom: 1px solid white;
 }
 
 #header_title {
     width: 90%;
+    margin-left: 30px;
     font-size: 30px;
     color: white;
 }
 
 #header_exchange {
     display: flex;
+    justify-content: space-around;
     width: 10%;
 }
 
 #button_usd,
 #button_byn {
-    width: 50px;
-    height: 50px;
-    border: 1px solid black;
-    border-radius: 50%;
-    color: blueviolet;
-    background-color: brown;
+    width: 40px;
+    height: 40px;
+    border: 1px solid white;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 #button_usd:hover,
 #button_byn:hover {
     cursor: pointer;
-    background-color: burlywood;
+    color: red;
+    font-size: 18px;
+    transition: 0.18s;
+}
+
+#button_usd:active,
+#button_byn:active {
+    color: white;
 }
 
 #wrapper {
@@ -50,25 +65,42 @@
 }
 
 #screen {
+    position: relative;
     display: flex;
+    margin-bottom: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+#screen_images {
+    width: 100%;
 }
 
 .slider_button {
+    position: absolute;
+    top: 0;
     display: none;
+    width: 40px;
+    height: 240px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: grey;
+    opacity: 0.4;
 }
 
-/* #buttonMoviePrevious {
-    
+#movieButtonPrevious {
+    left: 0;
+    background-image: url(/images/arrow-left.png);
 }
 
-#buttonMovieNext {
-    
-} 
+#movieButtonNext {
+    right: 0;
+    background-image: url(/images/arrow-right.png);
+}
 
-#buttonMoviePrevious:hover,
-#buttonMovieNext:hover{}
-
-*/
+.slider_button:hover {
+    opacity: 0.7;
+}
 
 img {
     width: 420px;
@@ -83,9 +115,37 @@ img {
     display: block;
 }
 
+#trailer {
+    margin-bottom: 20px;
+}
+
+#watch_trailer {
+    width: 100px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#watch_trailer:hover {
+    cursor: pointer;
+    color: red;
+    font-size: 15px;
+    transition: 0.18s;
+}
+
+#watch_trailer:active {
+    color: white;
+}
+
+/* #closeVideoButton{} */
+
 #seats {
     display: flex;
     flex-direction: column;
+    width: 70%;
+    margin-bottom: 20px;
 }
 
 .seats_row {
@@ -96,26 +156,39 @@ img {
 
 .seats_place {
     position: relative;
-    width: 10px;
-    height: 10px;
+    width: 25px;
+    height: 25px;
     margin: 5px;
+    border: 1px solid white;
+    border-radius: 5px;
+    background-image: url(/images/seat.png);
+    background-size: contain;
 }
 
 .seats_love {
-    width: 30px;
+    width: 48px;
 }
 
 .seats_info {
-    position: fixed;
-    padding: 10px 20px;
+    position: absolute;
+    top: -5px;
+    right: -185px;
+    width: 140px;
+    height: 80px;
     border: 1px solid black;
-    border-radius: 4px;
+    border-radius: 5px;
+    font-weight: bold;
     text-align: center;
-    font: italic 14px/1.3 sans-serif;
-    color: #333;
+    color: black;
     background-color: white;
     z-index: 1;
 }
+
+/* #confirmButton {
+}
+
+#cancelButton {
+} */
 
 [status='chosen'] {
     background-color: yellow;
@@ -125,11 +198,19 @@ img {
     background-color: red;
 }
 
-#select {
-    display: flex;
+#select,
+#selected {
+    margin-bottom: 20px;
+    color: white;
+    font-size: 20px;
 }
 
 #footer {
-    display: flex;
-    justify-content: center;
+    padding: 5px;
+    color: white;
+    background-color: black;
+    border-top: 1px solid white;
+    text-align: center;
 }
+
+/*900*/

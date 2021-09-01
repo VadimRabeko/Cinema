@@ -47,7 +47,6 @@ function showTrailer() {
     watchTrailerWrapper.innerHTML = VARIABLES.trailer;
 
     closeVideoButton.setAttribute('id', 'closeVideoButton');
-    closeVideoButton.innerText = 'Close Video';
     watchTrailerWrapper.append(closeVideoButton);
 }
 
@@ -162,9 +161,9 @@ function changeCurrency() {
 
 function infoSeat() {
     infoDiv.setAttribute('class', 'seats_info');
-    infoDiv.innerHTML = `Seat number: ${event.target.id} Price: ${
+    infoDiv.innerHTML = `Seat number: ${event.target.id} Price: ${(
         event.target.getAttribute('price') * VARIABLES.price
-    } Status: ${event.target.getAttribute('status')}`;
+    ).toFixed(2)} ${VARIABLES.currency} Status: ${event.target.getAttribute('status')}`;
     event.target.append(infoDiv);
 }
 
@@ -251,4 +250,4 @@ cancelButton.addEventListener('click', () => {
     cleanData();
 });
 
-// при переключении чистить дату, и принимать айди и элементам с этими айди добавлять оккупайд
+// при переключении добавить кнопки 3шт
