@@ -37,6 +37,8 @@ const watchTrailer = document.getElementById('watch_trailer');
 const movies = document.querySelectorAll('img');
 const seats = document.querySelectorAll('.seats_place');
 
+const shadowDiv = document.createElement('div');
+const showTrailerDiv = document.createElement('div');
 const closeVideoButton = document.createElement('button');
 const infoDiv = document.createElement('div');
 const confirmButton = document.createElement('button');
@@ -44,18 +46,20 @@ const cancelButton = document.createElement('button');
 const selectedDiv = document.createElement('div');
 
 function showTrailer() {
-    watchTrailerWrapper.innerHTML = VARIABLES.trailer;
-
+    shadowDiv.setAttribute('id', 'shadowDiv');
+    showTrailerDiv.setAttribute('id', 'showTrailerDiv');
     closeVideoButton.setAttribute('id', 'closeVideoButton');
-    watchTrailerWrapper.append(closeVideoButton);
+    closeVideoButton.innerText = 'Close';
+    showTrailerDiv.innerHTML = VARIABLES.trailer;
+    showTrailerDiv.append(closeVideoButton);
+
+    document.querySelector('body').append(shadowDiv);
+    wrapperDiv.append(showTrailerDiv);
 }
 
 function closeVideo() {
-    closeVideoButton.remove();
-    const activeTrailer = document.querySelector('iframe');
-    if (activeTrailer) {
-        activeTrailer.replaceWith(watchTrailer);
-    }
+    shadowDiv.remove();
+    showTrailerDiv.remove();
 }
 
 function cleanData() {
@@ -171,6 +175,10 @@ function removeInfoSeat() {
     infoDiv.remove();
 }
 
+function selectedData(choice, totalPrice) {
+    selectedDiv.innerHTML = `You chose seats ${choice}. Price: ${totalPrice.toFixed(2)} ${VARIABLES.currency}`;
+}
+
 function chooseSeat() {
     if (event.target.getAttribute('status') === 'free') {
         removeInfoSeat();
@@ -188,15 +196,26 @@ function chooseSeat() {
             selectedDiv.setAttribute('id', 'selected');
             confirmButton.setAttribute('id', 'confirmButton');
             cancelButton.setAttribute('id', 'cancelButton');
-            confirmButton.innerText = 'Confirm chosen seats';
+            confirmButton.innerText = 'Confirm the choice';
             cancelButton.innerText = 'Cancel the choice';
-            wrapperDiv.append(confirmButton, cancelButton);
+            selectedDiv.append(confirmButton, cancelButton);
         }
     }
 }
 
-function selectedData(choice, totalPrice) {
-    selectedDiv.innerHTML = `You chose seats ${choice}. Price: ${totalPrice.toFixed(2)} ${VARIABLES.currency}`;
+function confirmChosen() {
+    document.querySelectorAll('[status=chosen]').forEach((seat) => {
+        seat.setAttribute('status', 'occupied');
+        VARIABLES.occupiedArray.push(seat.id);
+    });
+    const activeMovie = moviesWrapper.querySelector('.active');
+    const chosenSeats = JSON.parse(sessionStorage.getItem(`Chosen_${activeMovie['alt']}`));
+    if (chosenSeats) {
+        chosenSeats.forEach((seat) => VARIABLES.occupiedArray.push(seat));
+    }
+    sessionStorage.setItem(VARIABLES.key, JSON.stringify(VARIABLES.occupiedArray));
+    VARIABLES.occupiedArray.splice(0);
+    cleanData();
 }
 
 function returnChosen(key) {
@@ -230,20 +249,7 @@ seats.forEach((seat) => {
     seat.addEventListener('click', chooseSeat);
 });
 
-confirmButton.addEventListener('click', () => {
-    document.querySelectorAll('[status=chosen]').forEach((seat) => {
-        seat.setAttribute('status', 'occupied');
-        VARIABLES.occupiedArray.push(seat.id);
-    });
-    const activeMovie = moviesWrapper.querySelector('.active');
-    const chosenSeats = JSON.parse(sessionStorage.getItem(`Chosen_${activeMovie['alt']}`));
-    if (chosenSeats) {
-        chosenSeats.forEach((seat) => VARIABLES.occupiedArray.push(seat));
-    }
-    sessionStorage.setItem(`Chosen_${activeMovie['alt']}`, JSON.stringify(VARIABLES.occupiedArray));
-    VARIABLES.occupiedArray.splice(0);
-    cleanData();
-});
+confirmButton.addEventListener('click', confirmChosen);
 
 cancelButton.addEventListener('click', () => {
     document.querySelectorAll('[status=chosen]').forEach((seat) => seat.setAttribute('status', 'free'));
@@ -251,3 +257,4 @@ cancelButton.addEventListener('click', () => {
 });
 
 // при переключении добавить кнопки 3шт
+// трейлер через асинк
