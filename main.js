@@ -265,6 +265,3 @@ cancelButton.addEventListener('click', () => {
     document.querySelectorAll('[status=chosen]').forEach((seat) => seat.setAttribute('status', 'free'));
     cleanData();
 });
-
-// при переключении добавить кнопки 3шт
-// трейлер через асинк
