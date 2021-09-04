@@ -92,12 +92,12 @@ body {
 
 #movieButtonPrevious {
     left: 0;
-    background-image: url('../../images/arrow-left.png');
+    background-image: url('images/arrow-left.png');
 }
 
 #movieButtonNext {
     right: 0;
-    background-image: url('../images/arrow-right.png');
+    background-image: url('images/arrow-right.png');
 }
 
 .slider_button:hover {
