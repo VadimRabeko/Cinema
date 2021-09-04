@@ -3,7 +3,6 @@
     margin: 0;
     padding: 0;
     font-family: 'Titillium Web';
-    /* border: 1px solid red; */
 }
 
 body {
@@ -22,7 +21,7 @@ body {
 }
 
 #header_title {
-    width: 90%;
+    width: 93%;
     margin-left: 30px;
     font-size: 30px;
     color: white;
@@ -31,7 +30,7 @@ body {
 #header_exchange {
     display: flex;
     justify-content: space-around;
-    width: 10%;
+    width: 7%;
 }
 
 #button_usd,
@@ -82,7 +81,7 @@ body {
     top: 0;
     display: none;
     width: 40px;
-    height: 240px;
+    height: 100%;
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -111,10 +110,34 @@ img {
 
 .movie {
     display: none;
+    width: 420px;
+    height: 240px;
 }
 
 .active {
     display: block;
+}
+
+#movie_indicators {
+    width: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.movie_indicator {
+    width: 7px;
+    height: 7px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.indicator-active {
+    width: 10px;
+    height: 10px;
+    background-color: rgb(250, 100, 50);
 }
 
 #trailer {
@@ -180,8 +203,8 @@ img {
 #seats {
     display: flex;
     flex-direction: column;
-    width: 70%;
-    margin-bottom: 20px;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .seats_row {
@@ -262,7 +285,7 @@ img {
     height: 120px;
     color: white;
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 #footer {
@@ -273,4 +296,85 @@ img {
     text-align: center;
 }
 
-/*900*/
+@media (max-width: 1200px) {
+    #header_title {
+        width: 90%;
+    }
+
+    #header_exchange {
+        width: 10%;
+    }
+}
+
+@media (max-width: 900px) {
+    #header_title {
+        width: 85%;
+    }
+
+    #header_exchange {
+        width: 15%;
+    }
+}
+
+@media (max-width: 600px) {
+    #header_title {
+        width: 80%;
+    }
+
+    #header_exchange {
+        width: 20%;
+    }
+
+    .seats_info {
+        right: -70px;
+    }
+}
+
+@media (max-width: 500px) {
+    #header {
+        flex-direction: column;
+    }
+
+    #header_title {
+        width: 100%;
+        margin-left: 0;
+        text-align: center;
+    }
+
+    #header_exchange {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .seats_info {
+        top: -45px;
+        right: -30px;
+        width: 80px;
+        height: 50px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 430px) {
+    .movie {
+        width: 300px;
+        height: 170px;
+    }
+
+    .seats_place {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 290px) {
+    .movie {
+        width: 252px;
+        height: 144px;
+    }
+
+    .seats_place {
+        width: 15px;
+        height: 15px;
+    }
+}

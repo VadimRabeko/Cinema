@@ -35,6 +35,7 @@ const moviesWrapper = document.getElementById('screen_images');
 const watchTrailerWrapper = document.getElementById('trailer');
 const watchTrailer = document.getElementById('watch_trailer');
 const movies = document.querySelectorAll('img');
+const movieIndicators = document.querySelectorAll('.movie_indicator');
 const seats = document.querySelectorAll('.seats_place');
 
 const shadowDiv = document.createElement('div');
@@ -44,18 +45,6 @@ const infoDiv = document.createElement('div');
 const confirmButton = document.createElement('button');
 const cancelButton = document.createElement('button');
 const selectedDiv = document.createElement('div');
-
-function showTrailer() {
-    shadowDiv.setAttribute('id', 'shadowDiv');
-    showTrailerDiv.setAttribute('id', 'showTrailerDiv');
-    closeVideoButton.setAttribute('id', 'closeVideoButton');
-    closeVideoButton.innerText = 'Close';
-    showTrailerDiv.innerHTML = VARIABLES.trailer;
-    showTrailerDiv.append(closeVideoButton);
-
-    document.querySelector('body').append(shadowDiv);
-    wrapperDiv.append(showTrailerDiv);
-}
 
 function closeVideo() {
     shadowDiv.remove();
@@ -80,13 +69,18 @@ function showPreviousMovie() {
     makeSeatsFree();
 
     const activeMovie = moviesWrapper.querySelector('.active');
+    const activeIndicator = document.querySelector('.indicator-active');
 
-    if (activeMovie.previousElementSibling) {
+    if (activeMovie.previousElementSibling && activeIndicator.previousElementSibling) {
         activeMovie.classList.remove('active');
         activeMovie.previousElementSibling.classList.add('active');
+        activeIndicator.classList.remove('indicator-active');
+        activeIndicator.previousElementSibling.classList.add('indicator-active');
     } else {
         activeMovie.classList.remove('active');
         movies[movies.length - 1].classList.add('active');
+        activeIndicator.classList.remove('indicator-active');
+        movieIndicators[movieIndicators.length - 1].classList.add('indicator-active');
     }
 
     if (VARIABLES.trailer === FIRST_TRAILER) {
@@ -109,13 +103,18 @@ function showNextMovie() {
     makeSeatsFree();
 
     const activeMovie = moviesWrapper.querySelector('.active');
+    const activeIndicator = document.querySelector('.indicator-active');
 
-    if (activeMovie.nextElementSibling) {
+    if (activeMovie.nextElementSibling && activeIndicator.nextElementSibling) {
         activeMovie.classList.remove('active');
         activeMovie.nextElementSibling.classList.add('active');
+        activeIndicator.classList.remove('indicator-active');
+        activeIndicator.nextElementSibling.classList.add('indicator-active');
     } else {
         activeMovie.classList.remove('active');
         movies[0].classList.add('active');
+        activeIndicator.classList.remove('indicator-active');
+        movieIndicators[0].classList.add('indicator-active');
     }
 
     if (VARIABLES.trailer === FIRST_TRAILER) {
@@ -142,6 +141,18 @@ function removeSliderButtons() {
     movieButtonNext.classList.remove('active');
 }
 
+function showTrailer() {
+    shadowDiv.setAttribute('id', 'shadowDiv');
+    showTrailerDiv.setAttribute('id', 'showTrailerDiv');
+    closeVideoButton.setAttribute('id', 'closeVideoButton');
+    closeVideoButton.innerText = 'Close';
+    showTrailerDiv.innerHTML = VARIABLES.trailer;
+    showTrailerDiv.append(closeVideoButton);
+
+    document.querySelector('body').append(shadowDiv);
+    wrapperDiv.append(showTrailerDiv);
+}
+
 function changeCurrency() {
     if (event.target === buttonUSD) {
         if (VARIABLES.switcher) {
@@ -164,7 +175,7 @@ function changeCurrency() {
 }
 
 function infoSeat() {
-    infoDiv.setAttribute('class', 'seats_info');
+    infoDiv.classList.add('seats_info');
     infoDiv.innerHTML = `Seat number: ${event.target.id} Price: ${(
         event.target.getAttribute('price') * VARIABLES.price
     ).toFixed(2)} ${VARIABLES.currency} Status: ${event.target.getAttribute('status')}`;
@@ -177,6 +188,14 @@ function removeInfoSeat() {
 
 function selectedData(choice, totalPrice) {
     selectedDiv.innerHTML = `You chose seats ${choice}. Price: ${totalPrice.toFixed(2)} ${VARIABLES.currency}`;
+    if (!document.getElementById('confirmButton') && !document.getElementById('cancelButton')) {
+        selectedDiv.setAttribute('id', 'selected');
+        confirmButton.setAttribute('id', 'confirmButton');
+        cancelButton.setAttribute('id', 'cancelButton');
+        confirmButton.innerText = 'Confirm the choice';
+        cancelButton.innerText = 'Cancel the choice';
+        selectedDiv.append(confirmButton, cancelButton);
+    }
 }
 
 function chooseSeat() {
@@ -190,15 +209,6 @@ function chooseSeat() {
 
         if (!document.getElementById('selected')) {
             selectDiv.replaceWith(selectedDiv);
-        }
-
-        if (!document.getElementById('confirmButton') && !document.getElementById('cancelButton')) {
-            selectedDiv.setAttribute('id', 'selected');
-            confirmButton.setAttribute('id', 'confirmButton');
-            cancelButton.setAttribute('id', 'cancelButton');
-            confirmButton.innerText = 'Confirm the choice';
-            cancelButton.innerText = 'Cancel the choice';
-            selectedDiv.append(confirmButton, cancelButton);
         }
     }
 }
