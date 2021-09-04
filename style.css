@@ -1,4 +1,380 @@
 * {
-  margin: 0;
-  box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Titillium Web';
+}
+
+body {
+    position: relative;
+    background-color: rgb(70, 70, 70);
+    z-index: 2;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: black;
+    border-bottom: 1px solid white;
+}
+
+#header_title {
+    width: 93%;
+    margin-left: 30px;
+    font-size: 30px;
+    color: white;
+}
+
+#header_exchange {
+    display: flex;
+    justify-content: space-around;
+    width: 7%;
+}
+
+#button_usd,
+#button_byn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid white;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#button_usd:hover,
+#button_byn:hover {
+    cursor: pointer;
+    color: rgb(250, 100, 50);
+    font-size: 18px;
+    transition: 0.18s;
+}
+
+#button_usd:active,
+#button_byn:active {
+    color: white;
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+#screen {
+    position: relative;
+    display: flex;
+    margin-bottom: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+}
+
+#screen_images {
+    width: 100%;
+}
+
+.slider_button {
+    position: absolute;
+    top: 0;
+    display: none;
+    width: 40px;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: grey;
+    opacity: 0.4;
+}
+
+#movieButtonPrevious {
+    left: 0;
+    background-image: url(/images/arrow-left.png);
+}
+
+#movieButtonNext {
+    right: 0;
+    background-image: url(/images/arrow-right.png);
+}
+
+.slider_button:hover {
+    opacity: 0.7;
+}
+
+img {
+    width: 420px;
+    height: 240px;
+}
+
+.movie {
+    display: none;
+    width: 420px;
+    height: 240px;
+}
+
+.active {
+    display: block;
+}
+
+#movie_indicators {
+    width: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.movie_indicator {
+    width: 7px;
+    height: 7px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 50%;
+}
+
+.indicator-active {
+    width: 10px;
+    height: 10px;
+    background-color: rgb(250, 100, 50);
+}
+
+#trailer {
+    margin-bottom: 20px;
+}
+
+#watch_trailer {
+    width: 100px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#watch_trailer:hover {
+    cursor: pointer;
+    color: rgb(250, 100, 50);
+    font-size: 15px;
+    transition: 0.18s;
+}
+
+#watch_trailer:active {
+    color: white;
+}
+
+#shadowDiv {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+#showTrailerDiv {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+}
+
+#closeVideoButton {
+    width: 100px;
+    height: 40px;
+    margin-top: 10px;
+    color: white;
+    background-color: rgb(70, 70, 70);
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#closeVideoButton:hover {
+    font-size: 18px;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    transition: 0.45s;
+}
+
+#seats {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.seats_row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.seats_place {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    margin: 5px;
+    border: 1px solid white;
+    border-radius: 5px;
+    background-image: url(/images/seat.png);
+    background-size: contain;
+}
+
+.seats_love {
+    width: 48px;
+}
+
+.seats_info {
+    position: absolute;
+    top: -75px;
+    right: -135px;
+    width: 140px;
+    height: 80px;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    color: black;
+    background-color: white;
+    z-index: 1;
+}
+
+#confirmButton,
+#cancelButton {
+    width: 160px;
+    height: 50px;
+    margin-top: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#confirmButton:hover {
+    font-size: 18px;
+    color: green;
+    cursor: pointer;
+    transition: 0.22s;
+}
+
+#cancelButton:hover {
+    font-size: 18px;
+    color: red;
+    cursor: pointer;
+    transition: 0.22s;
+}
+
+[status='chosen'] {
+    background-color: yellow;
+}
+
+[status='occupied'] {
+    background-color: red;
+}
+
+#select,
+#selected {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    color: white;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#footer {
+    padding: 5px;
+    color: white;
+    background-color: black;
+    border-top: 1px solid white;
+    text-align: center;
+}
+
+@media (max-width: 1200px) {
+    #header_title {
+        width: 90%;
+    }
+
+    #header_exchange {
+        width: 10%;
+    }
+}
+
+@media (max-width: 900px) {
+    #header_title {
+        width: 85%;
+    }
+
+    #header_exchange {
+        width: 15%;
+    }
+}
+
+@media (max-width: 600px) {
+    #header_title {
+        width: 80%;
+    }
+
+    #header_exchange {
+        width: 20%;
+    }
+
+    .seats_info {
+        right: -70px;
+    }
+}
+
+@media (max-width: 500px) {
+    #header {
+        flex-direction: column;
+    }
+
+    #header_title {
+        width: 100%;
+        margin-left: 0;
+        text-align: center;
+    }
+
+    #header_exchange {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .seats_info {
+        top: -45px;
+        right: -30px;
+        width: 80px;
+        height: 50px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 430px) {
+    .movie {
+        width: 300px;
+        height: 170px;
+    }
+
+    .seats_place {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 290px) {
+    .movie {
+        width: 252px;
+        height: 144px;
+    }
+
+    .seats_place {
+        width: 15px;
+        height: 15px;
+    }
 }
