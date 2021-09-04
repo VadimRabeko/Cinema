@@ -92,12 +92,12 @@ body {
 
 #movieButtonPrevious {
     left: 0;
-    background-image: url('../images/arrow-left.png');
+    background-image: url('images/arrow-left.png');
 }
 
 #movieButtonNext {
     right: 0;
-    background-image: url('../images/arrow-right.png');
+    background-image: url('images/arrow-right.png');
 }
 
 .slider_button:hover {
@@ -148,6 +148,7 @@ img {
 #watch_trailer {
     width: 100px;
     height: 30px;
+    background-color: white;
     border: 1px solid black;
     border-radius: 10px;
     font-size: 14px;
@@ -157,7 +158,6 @@ img {
 #watch_trailer:hover {
     cursor: pointer;
     color: rgb(250, 100, 50);
-    background-color: white;
     font-size: 15px;
     transition: 0.18s;
 }
@@ -222,7 +222,7 @@ img {
     margin: 5px;
     border: 1px solid white;
     border-radius: 5px;
-    background-image: url('../images/seat.png');
+    background-image: url('images/seat.png');
     background-size: contain;
 }
 
